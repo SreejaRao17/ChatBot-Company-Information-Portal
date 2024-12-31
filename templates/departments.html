@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department and User Info</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: white;
+        }
+
+        .container {
+            width: 100%;
+            padding: 20px;
+            background-color: white;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 32px;
+            color: black;
+        }
+
+        .department-buttons, .user-list, .user-details {
+            display: none;
+        }
+
+        .department-buttons button, .user-list button {
+            width: 100%;
+            background-color: white;
+            color: black;
+            padding: 20px;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            cursor: pointer;
+            font-size: 20px;
+            text-align: left;
+        }
+
+        .department-buttons button:hover, .user-list button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .user-details {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-details p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="department-buttons">
+            <h1>Departments</h1>
+            <button onclick="showUsers('CSE')">Computer Science & Engineering</button>
+            <button onclick="showUsers('IT')">Information Technology</button>
+            <button onclick="showUsers('CSM')">CSE AI & ML</button>
+            <button onclick="showUsers('CSD')">CSE AI & DS</button>
+            <button onclick="showUsers('CSBS')">Computer Science & Business Systems</button>
+            <button onclick="showUsers('AI_ML')">Artificial Intelligence & Machine Learning</button>
+            <button onclick="showUsers('AI_DS')">Artificial Intelligence & Data Science</button>
+            <button onclick="showUsers('ECE')">Electronics & Communication Engineering</button>
+            <button onclick="showUsers('EEE')">Electrical & Electronics Engineering</button>
+            <button onclick="showUsers('MECH')">Mechanical Engineering</button>
+            <button onclick="showUsers('CIVIL')">Civil Engineering</button>
+            <button onclick="showUsers('CHE')">Chemical Engineering</button>
+            <button onclick="showUsers('PHE')">Pharmaceutical Engineering</button>
+        </div>
+
+        <div class="user-list">
+            <h1 id="user-list-title">Users in Department</h1>
+            <div id="user-list"></div>
+        </div>
+
+        <div class="user-details">
+            <h1 id="user-name">User Details</h1>
+            <div id="user-details"></div>
+        </div>
+    </div>
+
+    <script>
+        const users = {
+            CSM: ['Saiteja'],
+            IT: ['Sreeja', 'Sathvika'],
+            AI_ML: ['Bhanu']
+        };
+
+        const userDetails = {
+            'Sreeja': { email: 'sreejarao01@gmail.com',Company: 'Google', Role: 'SDE-III', phone: '123-456-7890', linkedin: 'https://www.linkedin.com/in/sreeja-rao1703/' },
+            'Saiteja': { email: 'saiteja@gmail.com',Company: 'Microsoft', Role: 'SDE-III', phone: '123-456-7890', linkedin: 'https://www.linkedin.com/in/saiteja' }
+        };
+
+        function showDepartments() {
+            document.querySelector('.department-buttons').style.display = 'block';
+            document.querySelector('.user-list').style.display = 'none';
+            document.querySelector('.user-details').style.display = 'none';
+        }
+
+        function showUsers(department) {
+            document.querySelector('.department-buttons').style.display = 'none';
+            document.querySelector('.user-list').style.display = 'block';
+            document.querySelector('.user-details').style.display = 'none';
+
+            document.getElementById('user-list-title').innerText = `Alumni graduated from ${department.replace('_', ' ')}`;
+
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';
+            const deptUsers = users[department] || [];
+
+            if (deptUsers.length === 0) {
+                const noUsersMsg = document.createElement('p');
+                noUsersMsg.textContent = `No users available in ${department.replace('_', ' ')}`;
+                userList.appendChild(noUsersMsg);
+            } else {
+                deptUsers.forEach(user => {
+                    const button = document.createElement('button');
+                    button.textContent = user;
+                    button.onclick = () => showUserDetails(user);
+                    userList.appendChild(button);
+                });
+            }
+        }
+
+        function showUserDetails(userName) {
+            document.querySelector('.department-buttons').style.display = 'none';
+            document.querySelector('.user-list').style.display = 'none';
+            document.querySelector('.user-details').style.display = 'block';
+
+            document.getElementById('user-name').innerText = `${userName}'s Details`;
+
+            const details = userDetails[userName] || { email: 'N/A', phone: 'N/A', Company: 'N/A', Role: 'N/A', linkedin: 'N/A' };
+
+            document.getElementById('user-details').innerHTML = `
+                <p><strong>Email:</strong> ${details.email}</p>
+                <p><strong>Phone:</strong> ${details.phone}</p>
+                <p><strong>Company:</strong> ${details.Company}</p>
+                <p><strong>Role:</strong> ${details.Role}</p>
+                <p><strong>LinkedIn:</strong> <a href="${details.linkedin}" target="_blank">${details.linkedin}</a></p>
+            `;
+        }
+        showDepartments();
+    </script>
+</body>
+</html>
